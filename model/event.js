@@ -8,6 +8,7 @@ const eventSchema = mongoose.Schema({
     },
     description: {
         type: String,
+        required: false,
     },
     date: {
         type: Date,
@@ -16,16 +17,16 @@ const eventSchema = mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['personal', 'work', 'others'],
+        enum: ['personal', 'work', 'other'],
     }
 })
 
 const validateEvent = (event) => {
-    const categoryEnum = ['personal', 'work', 'others'];
+    const categoryEnum = ['personal', 'work', 'other'];
     const schema = Joi.object({
         title: Joi.string().required(),
-        description: Joi.string(),
-        date: Joi.date().iso().required(),
+        description: Joi.string().allow(''),
+        date: Joi.date().required(),
         category: Joi.string().valid(...categoryEnum).required()
     });
     return schema.validate(event);
